@@ -12,6 +12,11 @@ PrometheusMetrics(app)
 endpoints = ('one', 'two', 'three', 'four', 'five', 'error')
 
 
+@app.route('/')
+def hello():
+    return 'hello'
+
+
 @app.route('/one')
 def first_route():
     time.sleep(random.random() * 0.2)
