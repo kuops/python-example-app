@@ -1,0 +1,53 @@
+---
+# rbac role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: python-app-prometheus
+  namespace: dev
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - services
+  - endpoints
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+---
+# rbac rolebinding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: python-app-prometheus
+  namespace: dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: python-app-prometheus
+subjects:
+- kind: ServiceAccount
+  name: prometheus-k8s
+  namespace: monitoring
+---
+# servicemonitor
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: python-app-prometheus
+  namespace: monitoring
+  labels:
+    team: python
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: python-app
+      app.kubernetes.io/name: flask-app
+  endpoints:
+  - port: http
+    interval: 15s
+  namespaceSelector:
+    matchNames:
+    - dev
