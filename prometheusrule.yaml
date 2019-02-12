@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: python-app-rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: python-app.rules
+    rules:
+    - alert: ExampleAlert
+      annotations:
+        message: Errors 每秒状态码不为 200 错误率大于 1.
+      expr: |
+        rate(flask_http_request_duration_seconds_count{status!="200"}[1m])>1
+      labels:
+        severity: warning
