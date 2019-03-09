@@ -3,7 +3,7 @@ global:
   smtp_from: '573758972@qq.com'
   smtp_auth_username: '573758972@qq.com'
   smtp_auth_identity: '573758972@qq.com'
-  smtp_auth_password: 'clakdvzigydgbbjg'
+  smtp_auth_password: 'xxxxxxxxx'
   smtp_require_tls: false
 route:
   group_by:
